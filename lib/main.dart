@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'language_provider.dart';
 import 'theme_provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => ThemeProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => LanguageProvider())
+      ],
       child: const POCApp(),
     ),
   );
@@ -17,8 +22,11 @@ class POCApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: Provider.of<LanguageProvider>(context).currentLocal,
       theme: Provider.of<ThemeProvider>(context).currentTheme,
       darkTheme: Provider.of<ThemeProvider>(context).currentTheme,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         appBar: AppBar(
             title: Text("POC",
@@ -42,6 +50,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool _isTamilMode = false;
   bool _isDarkMode = false;
 
   final MaterialStateProperty<Icon?> themeIcon =
@@ -59,7 +68,24 @@ class _HomeState extends State<Home> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const Text("Theme"),
+        Text(AppLocalizations.of(context)!.language),
+        Switch(
+          value: _isTamilMode,
+          inactiveTrackColor: Provider.of<ThemeProvider>(context).background,
+          activeTrackColor: Provider.of<ThemeProvider>(context).background,
+          inactiveThumbColor: Colors.green,
+          trackOutlineColor: MaterialStateProperty.all<Color>(Colors.green),
+          trackOutlineWidth: MaterialStateProperty.all<double>(1.0),
+          activeColor: Colors.green,
+          onChanged: (bool value) {
+            setState(() {
+              Provider.of<LanguageProvider>(context, listen: false)
+                  .toggleLocal();
+              _isTamilMode = value;
+            });
+          },
+        ),
+        Text(AppLocalizations.of(context)!.theme),
         Switch(
           thumbIcon: themeIcon,
           value: _isDarkMode,
