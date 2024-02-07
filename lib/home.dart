@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'language_provider.dart';
 import 'list_view_page.dart';
+import 'otp_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -74,6 +75,15 @@ class _HomeState extends State<Home> {
             );
           },
           child: const Text('Go to List View Page'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const OTPScreen()),
+            );
+          },
+          child: const Text('Go to OTP Page'),
         ),
       ],
     );
