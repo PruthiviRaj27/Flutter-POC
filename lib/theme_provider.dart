@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:poc_project/preferences_manager.dart';
 
 class ThemeProvider with ChangeNotifier {
-  bool _isDarkMode = false;
+  bool _isDarkMode = PreferencesManager().isDarkMode;
 
   ThemeData get currentTheme => _isDarkMode ? _darkTheme : _lightTheme;
 

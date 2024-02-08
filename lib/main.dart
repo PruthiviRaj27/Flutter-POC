@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poc_project/preferences_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'database_helper.dart';
@@ -8,6 +9,7 @@ import 'theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await PreferencesManager().init();
   await DatabaseHelper.initializeDatabase();
   runApp(
     MultiProvider(

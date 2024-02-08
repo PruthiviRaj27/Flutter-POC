@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poc_project/preferences_manager.dart';
 import 'package:poc_project/theme_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _isTamilMode = false;
-  bool _isDarkMode = false;
+  bool _isTamilMode = PreferencesManager().isTamilMode;
+  bool _isDarkMode = PreferencesManager().isDarkMode;
 
   final MaterialStateProperty<Icon?> themeIcon =
   MaterialStateProperty.resolveWith<Icon?>(
@@ -46,6 +47,7 @@ class _HomeState extends State<Home> {
               Provider.of<LanguageProvider>(context, listen: false)
                   .toggleLocal();
               _isTamilMode = value;
+              PreferencesManager.setLanguage(_isTamilMode);
             });
           },
         ),
@@ -63,6 +65,7 @@ class _HomeState extends State<Home> {
             setState(() {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
               _isDarkMode = value;
+              PreferencesManager.setTheme(_isDarkMode);
             });
           },
         ),
